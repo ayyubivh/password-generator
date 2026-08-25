@@ -1,97 +1,127 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🔐 Password Generator
 
-# Getting Started
+A clean, lightweight **React Native** app for generating strong, customizable passwords on the go. Choose a length, pick which character sets to include, and get a secure password you can copy to your clipboard with a single long press.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+<p align="center">
+  <img src="docs/screenshots/home-screen.png" width="260" alt="Password Generator - empty form" />
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/generated-password.png" width="260" alt="Password Generator - generated password" />
+</p>
 
-## Step 1: Start Metro
+<p align="center">
+  <img alt="platform" src="https://img.shields.io/badge/platform-iOS%20%7C%20Android-blue" />
+  <img alt="react-native" src="https://img.shields.io/badge/React%20Native-0.87-61DAFB?logo=react" />
+  <img alt="typescript" src="https://img.shields.io/badge/TypeScript-ready-3178C6?logo=typescript&logoColor=white" />
+</p>
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## ✨ Features
 
-```sh
-# Using npm
-npm start
+- **Custom password length** — anywhere from 4 to 16 characters, validated in real time.
+- **Configurable character sets** — toggle lowercase letters, uppercase letters, numbers, and symbols independently via animated checkboxes.
+- **Instant generation** — passwords are built client-side from a cryptographically-irrelevant but uniformly random character pool (no network calls, nothing leaves the device).
+- **One-tap reset** — clears the form and the generated result to start fresh.
+- **Copy to clipboard** — long-press the generated password to copy it instantly.
+- **Form validation** — powered by Formik + Yup, with inline error messages and a disabled submit state until the input is valid.
 
-# OR using Yarn
-yarn start
+## 📱 Screenshots
+
+| Empty Form | Generated Password |
+| :---: | :---: |
+| <img src="docs/screenshots/home-screen.png" width="240" /> | <img src="docs/screenshots/generated-password.png" width="240" /> |
+
+## 🛠 Tech Stack
+
+| Layer | Library |
+| --- | --- |
+| Framework | [React Native](https://reactnative.dev) 0.87 |
+| Language | TypeScript |
+| Forms & Validation | [Formik](https://formik.org/) + [Yup](https://github.com/jquense/yup) |
+| UI Controls | [react-native-bouncy-checkbox](https://github.com/WrathChaos/react-native-bouncy-checkbox) |
+| Safe Areas | [react-native-safe-area-context](https://github.com/th3rdwave/react-native-safe-area-context) |
+| Clipboard | [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard) |
+| Testing | Jest + react-test-renderer |
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure your environment is set up per the official [React Native environment guide](https://reactnative.dev/docs/set-up-your-environment), and that you have:
+
+- Node.js `>= 22.11.0`
+- Xcode (for iOS) with CocoaPods
+- Android Studio + an emulator or device (for Android)
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd PasswordGenerator
+npm install
 ```
 
-## Step 2: Build and run your app
+For iOS, install the native CocoaPods dependencies:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+```bash
 bundle install
+cd ios && bundle exec pod install && cd ..
 ```
 
-Then, and every time you update your native dependencies, run:
+### Running the app
 
-```sh
-bundle exec pod install
+Start the Metro bundler:
+
+```bash
+npm start
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Then, in a separate terminal, build and launch on your platform of choice:
 
-```sh
-# Using npm
+```bash
+# iOS
 npm run ios
 
-# OR using Yarn
-yarn ios
+# Android
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Running tests
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npm test
+```
 
-## Step 3: Modify your app
+### Linting
 
-Now that you have successfully run the app, let's make changes!
+```bash
+npm run lint
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## 🧠 How It Works
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+1. The user enters a **password length** (4–16), validated with a Yup schema through Formik.
+2. The user toggles any combination of **lowercase**, **uppercase**, **numbers**, and **symbols**.
+3. On submit, [`App.tsx`](App.tsx) concatenates the selected character sets into a single pool, then builds the password by picking a random character from that pool for each position.
+4. The result is displayed in a highlighted card. **Long-pressing** the password copies it to the clipboard via `@react-native-clipboard/clipboard`.
+5. **Reset** clears the form, unchecks all options, and hides the generated password.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 📂 Project Structure
 
-## Congratulations! :tada:
+```
+PasswordGenerator/
+├── App.tsx              # Main app screen: form, checkboxes, password logic, UI
+├── index.js              # App entry point / registration
+├── __tests__/            # Jest test suite
+├── ios/                   # Native iOS project
+├── android/               # Native Android project
+└── docs/screenshots/      # README screenshots
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+## 🤝 Contributing
 
-### Now what?
+Contributions, issues, and feature requests are welcome. Feel free to open a pull request or file an issue.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## 📄 License
 
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is currently unlicensed. Add a `LICENSE` file to specify usage terms.
